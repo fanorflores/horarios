@@ -1,0 +1,69 @@
+.hero-wrap {
+    min-height: 100%;
+    background: linear-gradient(0deg, rgba(35, 13, 133, 0.281), rgba(4, 12, 119, 0.342)), url("../img/bg.jpg");
+    background-size: cover;
+}
+
+.logo-nav {
+    width: 7em;
+}
+
+.img-header {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.circular--square {
+    border-radius: 50%;
+}
+
+.logo-carrera img {
+    width: 60px;
+}
+
+.card .card-body {
+    padding: 2%;
+    padding-bottom: 0;
+    ;
+}
+
+.card .col-9 {
+    padding: 0;
+    padding-left: 2em;
+}
+
+.card .col-9 p {
+    margin-right: -2px !important;
+}
+
+.modal-backdrop {
+    z-index: 1;
+}
+
+.modal-dialog {
+    z-index: 2 !important;
+}
+
+.minh-100 {
+    height: 100vh;
+}
+
+.footer-container {
+    background-color: #090B34;
+}
+
+.footer-container img {
+    width: 30%;
+}
+
+.bg-dark-alt {
+    background-color: #090B34 !important;
+}
+
+.menu-users a {
+    color: #696464;
+}
+
+.modal-content {
+    max-width: 80% !important;
+}
