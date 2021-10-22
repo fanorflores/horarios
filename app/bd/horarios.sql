@@ -1,21 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 21-10-2021 a las 23:06:11
--- Versión del servidor: 8.0.21
--- Versión de PHP: 7.4.9
+-- Servidor: localhost:3306
+-- Tiempo de generación: 21-10-2021 a las 19:33:42
+-- Versión del servidor: 5.7.32
+-- Versión de PHP: 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `horarios`
@@ -25,7 +18,6 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-DROP PROCEDURE IF EXISTS `InsertarAsignatura`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarAsignatura` (IN `nombreIN` VARCHAR(45), IN `carreraIN` VARCHAR(45))  BEGIN
 INSERT INTO `libros`.`asignatura` (`nombre`, `carrera`) VALUES (nombreIN, carreraIN);
 END$$
@@ -38,14 +30,12 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `aulas`
 --
 
-DROP TABLE IF EXISTS `aulas`;
-CREATE TABLE IF NOT EXISTS `aulas` (
-  `idaulas` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `aulas` (
+  `idaulas` int(11) NOT NULL,
   `pab` varchar(45) NOT NULL,
   `aula` varchar(45) NOT NULL,
-  `state` int NOT NULL,
-  PRIMARY KEY (`idaulas`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `state` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `aulas`
@@ -55,7 +45,8 @@ INSERT INTO `aulas` (`idaulas`, `pab`, `aula`, `state`) VALUES
 (1, '36', '06', 1),
 (2, '34', '08', 1),
 (3, '38', '01', 1),
-(4, '36', '02', 0);
+(4, '36', '02', 0),
+(5, '42', '03', 0);
 
 -- --------------------------------------------------------
 
@@ -63,20 +54,15 @@ INSERT INTO `aulas` (`idaulas`, `pab`, `aula`, `state`) VALUES
 -- Estructura de tabla para la tabla `bloques`
 --
 
-DROP TABLE IF EXISTS `bloques`;
-CREATE TABLE IF NOT EXISTS `bloques` (
-  `idbloques` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `bloques` (
+  `idbloques` int(11) NOT NULL,
   `day` varchar(45) NOT NULL,
   `timestart` time NOT NULL,
   `timefinish` time NOT NULL,
   `asignatura` varchar(45) DEFAULT NULL,
-  `idhorarios` int NOT NULL,
-  `idaulas` int DEFAULT NULL,
-  `idprofesor` int DEFAULT NULL,
-  PRIMARY KEY (`idbloques`),
-  KEY `idhorarios_idx` (`idhorarios`),
-  KEY `idaulas_idx` (`idaulas`),
-  KEY `idprofesor_idx` (`idprofesor`)
+  `idhorarios` int(11) NOT NULL,
+  `idaulas` int(11) DEFAULT NULL,
+  `idprofesor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -85,16 +71,12 @@ CREATE TABLE IF NOT EXISTS `bloques` (
 -- Estructura de tabla para la tabla `carreras`
 --
 
-DROP TABLE IF EXISTS `carreras`;
-CREATE TABLE IF NOT EXISTS `carreras` (
-  `idcarreras` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `carreras` (
+  `idcarreras` int(11) NOT NULL,
   `carrera` varchar(65) NOT NULL,
-  `iddepartamentos` int NOT NULL,
-  `idcoordinador` int NOT NULL,
-  `carrerasdata` json DEFAULT NULL,
-  PRIMARY KEY (`idcarreras`),
-  KEY `idcoordinador_idx` (`idcoordinador`),
-  KEY `iddepartamentos_idx` (`iddepartamentos`)
+  `iddepartamentos` int(11) NOT NULL,
+  `idcoordinador` int(11) NOT NULL,
+  `carrerasdata` json DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -103,13 +85,11 @@ CREATE TABLE IF NOT EXISTS `carreras` (
 -- Estructura de tabla para la tabla `departamentos`
 --
 
-DROP TABLE IF EXISTS `departamentos`;
-CREATE TABLE IF NOT EXISTS `departamentos` (
-  `iddepartamentos` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `departamentos` (
+  `iddepartamentos` int(11) NOT NULL,
   `departamento` varchar(45) NOT NULL,
-  `facultad` varchar(65) NOT NULL,
-  PRIMARY KEY (`iddepartamentos`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `facultad` varchar(65) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `departamentos`
@@ -130,13 +110,10 @@ INSERT INTO `departamentos` (`iddepartamentos`, `departamento`, `facultad`) VALU
 -- Estructura de tabla para la tabla `grupos`
 --
 
-DROP TABLE IF EXISTS `grupos`;
-CREATE TABLE IF NOT EXISTS `grupos` (
-  `idgrupos` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `grupos` (
+  `idgrupos` int(11) NOT NULL,
   `grupo` json NOT NULL,
-  `idcarreras` int NOT NULL,
-  PRIMARY KEY (`idgrupos`),
-  KEY `idcarreras_idx` (`idcarreras`)
+  `idcarreras` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -145,15 +122,12 @@ CREATE TABLE IF NOT EXISTS `grupos` (
 -- Estructura de tabla para la tabla `horarios`
 --
 
-DROP TABLE IF EXISTS `horarios`;
-CREATE TABLE IF NOT EXISTS `horarios` (
-  `idhorarios` int NOT NULL AUTO_INCREMENT,
-  `year` year NOT NULL,
-  `semestre` int NOT NULL,
-  `idgrupos` int NOT NULL,
-  `horariodata` json DEFAULT NULL,
-  PRIMARY KEY (`idhorarios`),
-  KEY `idgrupos_idx` (`idgrupos`)
+CREATE TABLE `horarios` (
+  `idhorarios` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `semestre` int(11) NOT NULL,
+  `idgrupos` int(11) NOT NULL,
+  `horariodata` json DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -162,16 +136,14 @@ CREATE TABLE IF NOT EXISTS `horarios` (
 -- Estructura de tabla para la tabla `persons`
 --
 
-DROP TABLE IF EXISTS `persons`;
-CREATE TABLE IF NOT EXISTS `persons` (
-  `idpersons` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `persons` (
+  `idpersons` int(11) NOT NULL,
   `globalid` varchar(45) NOT NULL,
   `names` varchar(45) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) DEFAULT NULL,
-  `dataperson` json DEFAULT NULL,
-  PRIMARY KEY (`idpersons`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `dataperson` json DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `persons`
@@ -186,27 +158,160 @@ INSERT INTO `persons` (`idpersons`, `globalid`, `names`, `firstname`, `lastname`
 -- --------------------------------------------------------
 
 --
+-- Estructura Stand-in para la vista `studendata`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `studendata` (
+`Carnet` varchar(45)
+,`Nombres` varchar(45)
+,`Apellidos` varchar(91)
+,`Usuario` varchar(45)
+,`Carrera` json
+);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usersdata`
 --
 
-DROP TABLE IF EXISTS `usersdata`;
-CREATE TABLE IF NOT EXISTS `usersdata` (
-  `idusersdata` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `usersdata` (
+  `idusersdata` int(11) NOT NULL,
   `user` varchar(45) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `usertype` int NOT NULL,
-  `idpersons` int DEFAULT NULL,
-  PRIMARY KEY (`idusersdata`),
-  UNIQUE KEY `user_UNIQUE` (`user`),
-  KEY `idpersons_idx` (`idpersons`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `usertype` int(11) NOT NULL,
+  `idpersons` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `usersdata`
 --
 
 INSERT INTO `usersdata` (`idusersdata`, `user`, `password`, `usertype`, `idpersons`) VALUES
-(1, '30843677', '$2y$10$v/QqIpth4InhSaaWpDQHceMnEFqwIJxxLzyZzFpsPbLgTjCZqwwjq', 0, 1);
+(1, '30843677', '$2y$10$v/QqIpth4InhSaaWpDQHceMnEFqwIJxxLzyZzFpsPbLgTjCZqwwjq', 0, 1),
+(3, 'uesr2', 'fdasfasfs', 0, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `studendata`
+--
+DROP TABLE IF EXISTS `studendata`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `studendata`  AS SELECT `p`.`globalid` AS `Carnet`, `p`.`names` AS `Nombres`, concat(`p`.`firstname`,' ',`p`.`lastname`) AS `Apellidos`, `u`.`user` AS `Usuario`, `p`.`dataperson` AS `Carrera` FROM (`usersdata` `u` join `persons` `p` on((`u`.`idpersons` = `p`.`idpersons`))) ;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `aulas`
+--
+ALTER TABLE `aulas`
+  ADD PRIMARY KEY (`idaulas`);
+
+--
+-- Indices de la tabla `bloques`
+--
+ALTER TABLE `bloques`
+  ADD PRIMARY KEY (`idbloques`),
+  ADD KEY `idhorarios_idx` (`idhorarios`),
+  ADD KEY `idaulas_idx` (`idaulas`),
+  ADD KEY `idprofesor_idx` (`idprofesor`);
+
+--
+-- Indices de la tabla `carreras`
+--
+ALTER TABLE `carreras`
+  ADD PRIMARY KEY (`idcarreras`),
+  ADD KEY `idcoordinador_idx` (`idcoordinador`),
+  ADD KEY `iddepartamentos_idx` (`iddepartamentos`);
+
+--
+-- Indices de la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  ADD PRIMARY KEY (`iddepartamentos`);
+
+--
+-- Indices de la tabla `grupos`
+--
+ALTER TABLE `grupos`
+  ADD PRIMARY KEY (`idgrupos`),
+  ADD KEY `idcarreras_idx` (`idcarreras`);
+
+--
+-- Indices de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  ADD PRIMARY KEY (`idhorarios`),
+  ADD KEY `idgrupos_idx` (`idgrupos`);
+
+--
+-- Indices de la tabla `persons`
+--
+ALTER TABLE `persons`
+  ADD PRIMARY KEY (`idpersons`);
+
+--
+-- Indices de la tabla `usersdata`
+--
+ALTER TABLE `usersdata`
+  ADD PRIMARY KEY (`idusersdata`),
+  ADD UNIQUE KEY `user_UNIQUE` (`user`),
+  ADD KEY `idpersons_idx` (`idpersons`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `aulas`
+--
+ALTER TABLE `aulas`
+  MODIFY `idaulas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `bloques`
+--
+ALTER TABLE `bloques`
+  MODIFY `idbloques` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `carreras`
+--
+ALTER TABLE `carreras`
+  MODIFY `idcarreras` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  MODIFY `iddepartamentos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `grupos`
+--
+ALTER TABLE `grupos`
+  MODIFY `idgrupos` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  MODIFY `idhorarios` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `persons`
+--
+ALTER TABLE `persons`
+  MODIFY `idpersons` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usersdata`
+--
+ALTER TABLE `usersdata`
+  MODIFY `idusersdata` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -244,8 +349,3 @@ ALTER TABLE `horarios`
 --
 ALTER TABLE `usersdata`
   ADD CONSTRAINT `idpersons` FOREIGN KEY (`idpersons`) REFERENCES `persons` (`idpersons`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
