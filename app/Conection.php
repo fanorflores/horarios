@@ -13,7 +13,7 @@
            $this->host="localhost";
            $this->port="3306";
            $this->user="root";
-           $this->pwd="";
+           $this->pwd="root";
            $this->db="horarios";
            mysqli_report(MYSQLI_REPORT_STRICT);
 
@@ -34,16 +34,17 @@
 
         public function __destruct()
         {
-           try {
+            mysqli_report(MYSQLI_REPORT_STRICT);
+            try
+            {
                $this->con->close();
-           } catch (Exception $e) {
-              echo "No se ha cerrado la conexón adecuadamente: "+$e->getMessage();
-           }
+            }
+            catch(Exception $e)
+            {
+                echo "No se encontró una conexión MYSQL para cerrar";
 
+            }
         }
 
-
     }
-
-
     ?>
