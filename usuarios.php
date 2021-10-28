@@ -2,6 +2,7 @@
 <?php 
 	include_once("assets/template/head.php"); 
 	require_once("app/UsersData.php");
+	include_once("app/ZonePrivate.php");
 	$modalstatus="d-none";
 	$filter="";
 	if (isset($_GET['userfilter']))

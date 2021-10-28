@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark-alt" >
 			<div class="container">
 			  <a class="navbar-brand" href="/">
@@ -26,8 +27,27 @@
 
                         </div>
                     </li>
-				  <li class="nav-item cta"><a href="#" class="nav-link icon d-flex align-items-center" data-toggle="modal" data-target="#loginModal"><i class="ion-ios-person mr-2"></i> Acceder</a></li>
-				  <li class="nav-item cta"><a href="#" class="nav-link icon d-flex align-items-center" ><i class="ion-ios-exit mr-2"></i> Angete Secreto (Salir)</a></li>
+					<?php
+					if (!$logged)
+					{
+				?>
+					<li class="nav-item cta">
+						
+						<button type="button" class="btn nav-link icon d-flex align-items-center" data-toggle="modal" data-target="#loginModal">
+						<i class="ion-ios-person mr-2"></i> Acceder</a>
+						</button>
+					</li>
+					<?php
+					}
+					else
+					{
+				?>
+                <li class="nav-item cta">
+                <a href="login.php?logout" type="button" class="btn nav-link icon d-flex align-items-center" >
+				 	 <i class="ion-ios-exit mr-2"></i> <?php echo $_SESSION['usertag']; ?> (Salir)</a>
+					</a>
+                </li>
+				<?php }require_once("assets/modals/auth-modal.php"); ?>
 
 				  <!-- Modal -->
 				  </div>
