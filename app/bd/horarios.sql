@@ -2,21 +2,21 @@
 -- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 21-10-2021 a las 19:33:42
--- Versión del servidor: 5.7.32
--- Versión de PHP: 7.4.12
+-- Host: localhost:3306
+-- Generation Time: Nov 03, 2021 at 05:02 PM
+-- Server version: 5.7.32
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Base de datos: `horarios`
+-- Database: `horarios`
 --
 
 DELIMITER $$
 --
--- Procedimientos
+-- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarAsignatura` (IN `nombreIN` VARCHAR(45), IN `carreraIN` VARCHAR(45))  BEGIN
 INSERT INTO `libros`.`asignatura` (`nombre`, `carrera`) VALUES (nombreIN, carreraIN);
@@ -27,7 +27,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `aulas`
+-- Table structure for table `aulas`
 --
 
 CREATE TABLE `aulas` (
@@ -38,7 +38,7 @@ CREATE TABLE `aulas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `aulas`
+-- Dumping data for table `aulas`
 --
 
 INSERT INTO `aulas` (`idaulas`, `pab`, `aula`, `state`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `aulas` (`idaulas`, `pab`, `aula`, `state`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `bloques`
+-- Table structure for table `bloques`
 --
 
 CREATE TABLE `bloques` (
@@ -68,7 +68,7 @@ CREATE TABLE `bloques` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `carreras`
+-- Table structure for table `carreras`
 --
 
 CREATE TABLE `carreras` (
@@ -82,7 +82,7 @@ CREATE TABLE `carreras` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `departamentos`
+-- Table structure for table `departamentos`
 --
 
 CREATE TABLE `departamentos` (
@@ -92,7 +92,7 @@ CREATE TABLE `departamentos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `departamentos`
+-- Dumping data for table `departamentos`
 --
 
 INSERT INTO `departamentos` (`iddepartamentos`, `departamento`, `facultad`) VALUES
@@ -107,7 +107,7 @@ INSERT INTO `departamentos` (`iddepartamentos`, `departamento`, `facultad`) VALU
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `grupos`
+-- Table structure for table `grupos`
 --
 
 CREATE TABLE `grupos` (
@@ -119,7 +119,7 @@ CREATE TABLE `grupos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `horarios`
+-- Table structure for table `horarios`
 --
 
 CREATE TABLE `horarios` (
@@ -133,7 +133,21 @@ CREATE TABLE `horarios` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `persons`
+-- Stand-in structure for view `logindata`
+-- (See below for the actual view)
+--
+CREATE TABLE `logindata` (
+`idpersons` int(11)
+,`user` varchar(45)
+,`nombres` varchar(91)
+,`password` varchar(255)
+,`usertype` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `persons`
 --
 
 CREATE TABLE `persons` (
@@ -146,7 +160,7 @@ CREATE TABLE `persons` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `persons`
+-- Dumping data for table `persons`
 --
 
 INSERT INTO `persons` (`idpersons`, `globalid`, `names`, `firstname`, `lastname`, `dataperson`) VALUES
@@ -158,8 +172,8 @@ INSERT INTO `persons` (`idpersons`, `globalid`, `names`, `firstname`, `lastname`
 -- --------------------------------------------------------
 
 --
--- Estructura Stand-in para la vista `studendata`
--- (Véase abajo para la vista actual)
+-- Stand-in structure for view `studendata`
+-- (See below for the actual view)
 --
 CREATE TABLE `studendata` (
 `Carnet` varchar(45)
@@ -172,7 +186,7 @@ CREATE TABLE `studendata` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usersdata`
+-- Table structure for table `usersdata`
 --
 
 CREATE TABLE `usersdata` (
@@ -184,34 +198,44 @@ CREATE TABLE `usersdata` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `usersdata`
+-- Dumping data for table `usersdata`
 --
 
 INSERT INTO `usersdata` (`idusersdata`, `user`, `password`, `usertype`, `idpersons`) VALUES
-(1, '30843677', '$2y$10$v/QqIpth4InhSaaWpDQHceMnEFqwIJxxLzyZzFpsPbLgTjCZqwwjq', 0, 1),
-(3, 'uesr2', 'fdasfasfs', 0, 2);
+(3, 'user2', 'e99a18c428cb38d5f260853678922e03', 0, 2),
+(4, 'user3', 'ffasfasfgfhdgh', 0, 4),
+(6, '30843677', '$2y$10$iBpkEn92sCZERS39imFrvOLs1x.WTrzG1xfC3xnyRPBJyYZ/prPve', 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `studendata`
+-- Structure for view `logindata`
+--
+DROP TABLE IF EXISTS `logindata`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `logindata`  AS SELECT `p`.`idpersons` AS `idpersons`, `u`.`user` AS `user`, concat(substring_index(`p`.`names`,' ',1),' ',`p`.`firstname`) AS `nombres`, `u`.`password` AS `password`, `u`.`usertype` AS `usertype` FROM (`usersdata` `u` join `persons` `p` on((`p`.`idpersons` = `u`.`idpersons`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `studendata`
 --
 DROP TABLE IF EXISTS `studendata`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `studendata`  AS SELECT `p`.`globalid` AS `Carnet`, `p`.`names` AS `Nombres`, concat(`p`.`firstname`,' ',`p`.`lastname`) AS `Apellidos`, `u`.`user` AS `Usuario`, `p`.`dataperson` AS `Carrera` FROM (`usersdata` `u` join `persons` `p` on((`u`.`idpersons` = `p`.`idpersons`))) ;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `aulas`
+-- Indexes for table `aulas`
 --
 ALTER TABLE `aulas`
   ADD PRIMARY KEY (`idaulas`);
 
 --
--- Indices de la tabla `bloques`
+-- Indexes for table `bloques`
 --
 ALTER TABLE `bloques`
   ADD PRIMARY KEY (`idbloques`),
@@ -220,7 +244,7 @@ ALTER TABLE `bloques`
   ADD KEY `idprofesor_idx` (`idprofesor`);
 
 --
--- Indices de la tabla `carreras`
+-- Indexes for table `carreras`
 --
 ALTER TABLE `carreras`
   ADD PRIMARY KEY (`idcarreras`),
@@ -228,33 +252,33 @@ ALTER TABLE `carreras`
   ADD KEY `iddepartamentos_idx` (`iddepartamentos`);
 
 --
--- Indices de la tabla `departamentos`
+-- Indexes for table `departamentos`
 --
 ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`iddepartamentos`);
 
 --
--- Indices de la tabla `grupos`
+-- Indexes for table `grupos`
 --
 ALTER TABLE `grupos`
   ADD PRIMARY KEY (`idgrupos`),
   ADD KEY `idcarreras_idx` (`idcarreras`);
 
 --
--- Indices de la tabla `horarios`
+-- Indexes for table `horarios`
 --
 ALTER TABLE `horarios`
   ADD PRIMARY KEY (`idhorarios`),
   ADD KEY `idgrupos_idx` (`idgrupos`);
 
 --
--- Indices de la tabla `persons`
+-- Indexes for table `persons`
 --
 ALTER TABLE `persons`
   ADD PRIMARY KEY (`idpersons`);
 
 --
--- Indices de la tabla `usersdata`
+-- Indexes for table `usersdata`
 --
 ALTER TABLE `usersdata`
   ADD PRIMARY KEY (`idusersdata`),
@@ -262,63 +286,63 @@ ALTER TABLE `usersdata`
   ADD KEY `idpersons_idx` (`idpersons`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `aulas`
+-- AUTO_INCREMENT for table `aulas`
 --
 ALTER TABLE `aulas`
   MODIFY `idaulas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `bloques`
+-- AUTO_INCREMENT for table `bloques`
 --
 ALTER TABLE `bloques`
   MODIFY `idbloques` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `carreras`
+-- AUTO_INCREMENT for table `carreras`
 --
 ALTER TABLE `carreras`
   MODIFY `idcarreras` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `departamentos`
+-- AUTO_INCREMENT for table `departamentos`
 --
 ALTER TABLE `departamentos`
   MODIFY `iddepartamentos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de la tabla `grupos`
+-- AUTO_INCREMENT for table `grupos`
 --
 ALTER TABLE `grupos`
   MODIFY `idgrupos` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `horarios`
+-- AUTO_INCREMENT for table `horarios`
 --
 ALTER TABLE `horarios`
   MODIFY `idhorarios` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `persons`
+-- AUTO_INCREMENT for table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `idpersons` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idpersons` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `usersdata`
+-- AUTO_INCREMENT for table `usersdata`
 --
 ALTER TABLE `usersdata`
-  MODIFY `idusersdata` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idusersdata` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `bloques`
+-- Constraints for table `bloques`
 --
 ALTER TABLE `bloques`
   ADD CONSTRAINT `idaulas` FOREIGN KEY (`idaulas`) REFERENCES `aulas` (`idaulas`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -326,26 +350,26 @@ ALTER TABLE `bloques`
   ADD CONSTRAINT `idprofesor` FOREIGN KEY (`idprofesor`) REFERENCES `persons` (`idpersons`);
 
 --
--- Filtros para la tabla `carreras`
+-- Constraints for table `carreras`
 --
 ALTER TABLE `carreras`
   ADD CONSTRAINT `idcoordinador` FOREIGN KEY (`idcoordinador`) REFERENCES `persons` (`idpersons`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `iddepartamentos` FOREIGN KEY (`iddepartamentos`) REFERENCES `departamentos` (`iddepartamentos`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `grupos`
+-- Constraints for table `grupos`
 --
 ALTER TABLE `grupos`
   ADD CONSTRAINT `idcarreras` FOREIGN KEY (`idcarreras`) REFERENCES `carreras` (`idcarreras`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `horarios`
+-- Constraints for table `horarios`
 --
 ALTER TABLE `horarios`
   ADD CONSTRAINT `idgrupos` FOREIGN KEY (`idgrupos`) REFERENCES `grupos` (`idgrupos`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `usersdata`
+-- Constraints for table `usersdata`
 --
 ALTER TABLE `usersdata`
   ADD CONSTRAINT `idpersons` FOREIGN KEY (`idpersons`) REFERENCES `persons` (`idpersons`) ON DELETE CASCADE ON UPDATE CASCADE;
