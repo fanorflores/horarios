@@ -26,7 +26,8 @@ class UsersData
     public function loginData($user,$pwd)
     {
         $users=$this->con->getCon()->query("select * from logindata where user='$user';");
-        if($users->num_rows)
+        
+        if(!empty($users) and mysqli_num_rows($users))
         {
             $usr=$users->fetch_assoc();
             if(password_verify($pwd,$usr["password"]))

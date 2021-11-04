@@ -12,8 +12,8 @@
         {
            $this->host="localhost";
            $this->port="3306";
-           $this->user="root";
-           $this->pwd="root";
+           $this->user="fanor";
+           $this->pwd="pweb2021";
            $this->db="horarios";
            mysqli_report(MYSQLI_REPORT_STRICT);
 

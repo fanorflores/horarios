@@ -2,7 +2,6 @@
 include_once("app/UsersData.php"); 
 include_once("app/UsersSesions.php");
 $uss=new UsersSesions();
-
 if(isset($_GET['logout']))
 {
     $uss->closeSesions();
@@ -29,11 +28,13 @@ if (isset($_POST['user']))
     }
     else
     {
+        $logged=false;
         $clasemensaje="";
     }
 }
 else
 {
+    $logged=false;
     $clasemensaje="d-none";
 }
 
