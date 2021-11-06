@@ -1,4 +1,7 @@
 <?php
+require_once('Conection.php');
+
+
     class Persons 
     {
         private $idpersons;
@@ -7,6 +10,8 @@
         private $firstname;
         private $lastname;
         private $dataperson;
+        private $con;
+
 
        public function __construct()
        {
@@ -16,6 +21,7 @@
             $this->firstname="";
             $this->lastname="";
             $this->dataperson=null;
+            $this->con=new Conection();
        }
         public function getDataperson()
         {
@@ -68,5 +74,25 @@
             $this->idpersons = $idpersons;
 
         }
+
+        public function addPerson($globalid,$name,$firstname,$lastname,$username,$password)
+        {
+            $password=password_hash($password,PASSWORD_DEFAULT);
+            mysqli_report(MYSQLI_REPORT_STRICT);
+            
+
+            try {
+                    $this->con->getCon()->query("call addPerson('$globalid','$name','$firstname','$lastname','$username','$password');");
+                    return $this->con->getCon()->affected_rows;
+
+
+            } catch (Exception $e) {
+                return
+                "Error al guardar el usuario (". mysqli_errno($this->con->getCon()) .")".
+                $e->getMessage();
+            }
+
+        }
     }
+
 ?>
