@@ -26,21 +26,30 @@
 
 				  </div>
 				</li>
+				<?php
+					if (!$logged)
+					{
+				?>
 				<li class="nav-item cta">
 					
 				 	 <button type="button" class="btn nav-link icon d-flex align-items-center" data-toggle="modal" data-target="#loginModal">
 				 	 <i class="ion-ios-person mr-2"></i> Acceder</a>
 					</button>
 				</li>
+				<?php
+					}
+					else
+					{
+				?>
                 <li class="nav-item cta">
-                <button type="button" class="btn nav-link icon d-flex align-items-center" >
-				 	 <i class="ion-ios-exit mr-2"></i> Angete Secreto (Salir)</a>
-				</button>
+                <a href="login.php?logout" type="button" class="btn nav-link icon d-flex align-items-center" >
+				 	 <i class="ion-ios-exit mr-2"></i> <?php echo $_SESSION['usertag']; ?> (Salir)</a>
+					</a>
                 </li>
 
 
 				<!-- Modal -->
-				<?php require_once("assets/modals/auth-modal.php"); ?>
+				<?php }require_once("assets/modals/auth-modal.php"); ?>
 
 			  </div>
 				</ul>

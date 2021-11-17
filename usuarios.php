@@ -1,7 +1,17 @@
 
 <?php 
 	include_once("assets/template/head.php"); 
+	require_once("app/UsersData.php");
+	include_once("app/ZonePrivate.php");
 	$modalstatus="d-none";
+	$filter="";
+	if (isset($_GET['userfilter']))
+	{
+		$filter=$_GET['userfilter'];
+	}
+	$usuario=new UsersData();
+	$resultado=$usuario->dataUserStudent($filter);
+	
 
 ?>
 
@@ -59,17 +69,38 @@
 						  </tr>
 						</thead>
 						<tbody>
+						<form action="user-update.php" method="post">
+						  <?php
+						 
+						 $i=false;
+						  while($estData=$resultado->fetch_assoc())
+						  {
+							  $i=true;
+						  ?>
 						  <tr>
-							<th scope="row">30843677</th>
-							<td>Fanor Antonio</td>
-							<td>Rivera Flores</td>
-							<td>frivera</td>
-							<td>Informática Educativa</td>
+							<th scope="row"> <?php echo $estData['Carnet']  ?></th>
+							<td> <?php echo $estData['Nombres']  ?></td>
+							<td> <?php echo $estData['Apellidos']  ?></td>
+							<td> <?php echo $estData['Usuario']  ?></td>
+							<td>  <?php echo $estData['Carrera']  ?></td>
 							<td>
-								<i class="icon-pencil p-1"> 	</i>
-								<i class="icon-trash p-1"> 	</i>
+								<button class="icon-pencil p-1 border-0 bg-white" name="editar" type="submit" value=" <?php echo $estData['Carnet']  ?>" ></button>
+								<button class="icon-trash p-1 border-0 bg-white" name="eliminar" type="submit" value=" <?php echo $estData['Carnet']  ?>" ></button>
+
 							</td>
+						  </tr>
+						  <?php 
+						  }
+						  if($i==false)
+						  {
+								echo " 
+								<div class='alert alert-danger text-light' role='alert'>
+									No se encontraron resultados
+								</div>";
+						  }
+						  ?>
 						</tbody>
+						</form>
 					  </table>
 
 				</div></div>

@@ -1,9 +1,21 @@
 <?php require_once("assets/template/head.php"); ?>
 	  <div class="main-section">
 		 
-	  <?php require_once("assets/template/main-menu.php"); 
+	  <?php 
+	  include_once("app/UsersSesions.php"); 
+	  $uss=new UsersSesions();
+	  $logged=false;
+	  if(isset($_SESSION['usertag']))
+	  {
+		$logged=true;
+	  }
+	  else
+	  {
+		  $logged=false;
+	  }
+
 	 
-	  
+	  require_once("assets/template/main-menu.php"); 
 	  ?>
 
 		<!-- END nav -->
@@ -14,7 +26,9 @@
 				  <div class="row description align-items-center justify-content-center">
 					  <div class="col-md-10 text-center">
 						  <div class="text">
-							  <h2 class="mb-5">Sistema Horarios Académicos</h2>
+							  <h2 class="mb-5">Sistema Horarios Académicos
+
+							  </h2>
 							  <div class="img-header">
 								<img src="img/SVG/logofei-v.svg" alt="Logo FEI">
 							  </div>

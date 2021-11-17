@@ -1,5 +1,7 @@
 
-<?php include_once("assets/template/head.php"); ?>
+<?php include_once("assets/template/head.php"); 
+	include_once("app/ZonePrivate.php");
+?>
 
 <div class="main-section">
 		<!-- nav -->

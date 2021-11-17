@@ -15,7 +15,7 @@
 										<i class="ion-ios-person"></i>
 									  </span>
 									</div>
-									<input type="text" class="form-control" placeholder="usuario o carnet">
+									<input type="text" name="user" id="user" class="form-control" placeholder="usuario o carnet" required>
 								  </div>
 								  <div class="input-group mb-3">
 									<div class="input-group-prepend">
@@ -23,7 +23,7 @@
 										<i class="ion-ios-lock"></i>
 									  </span>
 									</div>
-									<input type="password" class="form-control" placeholder="contraseña">
+									<input type="password" name="password" id="password" class="form-control" placeholder="contraseña" required>
 								  </div>
 								  
 								<div class="footer text-center">
