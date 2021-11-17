@@ -67,34 +67,6 @@ else
 {
     header("Location: usuarios.php");
 }
-/*
-if(isset($_POST['submit']))
-{
-
-    
-    $globalid=$_POST['globalid'];
-    $name=$_POST['names'];
-    $firstname=$_POST['firstname'];
-    $lastname=$_POST['lastname'];
-    $user=$_POST['user'];
-    $pwd=$_POST['pwd'];
-
-    $p=new Persons();
-    if($p->addPerson($globalid,$name,$firstname,$lastname,$user,$pwd)==1)
-        {
-            $clasemensaje="alert alert-success text-light ";
-            $mensaje= "<strong>Usuario Agregado Correctamente</strong><br> Serás redirigido en 3 Segundos o haz clic en usuarios";
-            echo "<meta http-equiv='refresh' content='3; url=usuarios.php'>  ";
-        }
-       
-    else
-        {
-            $clasemensaje="alert alert-danger text-light ";
-            $mensaje= "No se pudo guardar el usuario:<strong> El usuario ya existe</strong><br>";
-
-        }
-
-}*/
 
 ?>
 
