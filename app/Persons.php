@@ -93,6 +93,44 @@ require_once('Conection.php');
             }
 
         }
+        public function getPerson($globalid)
+        {
+           $person= $this->con->getCon()->query("select * from getPerson where globalid=$globalid;");
+           return $person->fetch_assoc();
+        }
+        public function delPerson()
+        {
+           $person= $this->con->getCon()->query("DELETE FROM persons  WHERE (idpersons =". $this->getIdpersons()." );");
+           return $this->con->getCon()->affected_rows;
+        }
+
+        public function updatePerson($globalid,$name,$firstname,$lastname,$username,$password)
+        {
+            mysqli_report(MYSQLI_REPORT_STRICT);
+            try {
+                    $this->con->getCon()->query("
+                    call updateFullPerson(
+                        '$globalid',
+                        '$name',
+                        '$firstname',
+                        '$lastname',
+                        '$username',
+                        '$password',
+                        ".$this->getIdpersons()."                        
+                        )
+                    ;");
+                    return 1;
+
+
+            } catch (Exception $e) {
+                return
+                "Error al Actaulizar el usuario (". mysqli_errno($this->con->getCon()) .")".
+                $e->getMessage();
+            }
+
+        }
     }
+
+
 
 ?>

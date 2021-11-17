@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 06-11-2021 a las 00:24:38
+-- Tiempo de generación: 17-11-2021 a las 00:36:36
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.4.9
 
@@ -38,6 +38,22 @@ DROP PROCEDURE IF EXISTS `InsertarAsignatura`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarAsignatura` (IN `nombreIN` VARCHAR(45), IN `carreraIN` VARCHAR(45))  BEGIN
 INSERT INTO `libros`.`asignatura` (`nombre`, `carrera`) VALUES (nombreIN, carreraIN);
 END$$
+
+DROP PROCEDURE IF EXISTS `updateFullPerson`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateFullPerson` (IN `globalidIN` VARCHAR(45), IN `namesIN` VARCHAR(65), IN `firstnameIN` VARCHAR(65), IN `lastnameIN` VARCHAR(65), IN `userIN` VARCHAR(65), IN `pwdIN` VARCHAR(255), IN `idpersonsIN` INT)  begin
+UPDATE persons SET 
+globalid = globalidIN, 
+names= namesIN, 
+firstname = firstnameIN, 
+lastname =lastnameIN
+WHERE (`idpersons` = idpersonsIN);
+
+UPDATE usersdata SET 
+user =userIN, 
+password = pwdIN
+ WHERE (idpersons = idpersonsIN);
+
+end$$
 
 DELIMITER ;
 
@@ -139,6 +155,43 @@ INSERT INTO `departamentos` (`iddepartamentos`, `departamento`, `facultad`) VALU
 -- --------------------------------------------------------
 
 --
+-- Estructura Stand-in para la vista `fullperson`
+-- (Véase abajo para la vista actual)
+--
+DROP VIEW IF EXISTS `fullperson`;
+CREATE TABLE IF NOT EXISTS `fullperson` (
+`useridpersons` int
+,`idpersons` int
+,`globalid` varchar(45)
+,`names` varchar(45)
+,`firstname` varchar(45)
+,`lastname` varchar(45)
+,`dataperson` json
+,`idusersdata` int
+,`user` varchar(45)
+,`password` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `getperson`
+-- (Véase abajo para la vista actual)
+--
+DROP VIEW IF EXISTS `getperson`;
+CREATE TABLE IF NOT EXISTS `getperson` (
+`idpersons` int
+,`globalid` varchar(45)
+,`names` varchar(45)
+,`firstname` varchar(45)
+,`lastname` varchar(45)
+,`user` varchar(45)
+,`password` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `grupos`
 --
 
@@ -199,18 +252,17 @@ CREATE TABLE IF NOT EXISTS `persons` (
   `dataperson` json DEFAULT NULL,
   PRIMARY KEY (`idpersons`),
   UNIQUE KEY `globalid_UNIQUE` (`globalid`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `persons`
 --
 
 INSERT INTO `persons` (`idpersons`, `globalid`, `names`, `firstname`, `lastname`, `dataperson`) VALUES
-(1, '30843677', 'Fanor Antonio', 'Rivera ', 'Flores', NULL),
-(2, '18013654', 'Juan Francisco', 'Estrada', 'Nuñez', NULL),
 (3, '210168', 'Dominga del  Socorro', 'Lopez', NULL, NULL),
-(4, '20891201', 'Maritza', 'Canales', 'Ruíz', NULL),
-(14, '09040205', 'Augusto ', 'Calderon', 'Sandino', NULL);
+(14, '09040205', 'Augusto ', 'Calderon', 'Sandino', NULL),
+(36, '655125255', 'Benjamín', 'Zeledón', 'Díaz', NULL),
+(37, '007', 'Angente', 'Secreto', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -243,17 +295,37 @@ CREATE TABLE IF NOT EXISTS `usersdata` (
   PRIMARY KEY (`idusersdata`),
   UNIQUE KEY `user_UNIQUE` (`user`),
   KEY `idpersons_idx` (`idpersons`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `usersdata`
 --
 
 INSERT INTO `usersdata` (`idusersdata`, `user`, `password`, `usertype`, `idpersons`) VALUES
-(3, 'user2', 'e99a18c428cb38d5f260853678922e03', 0, 2),
-(4, 'user3', 'ffasfasfgfhdgh', 0, 4),
-(6, '30843677', '$2y$10$iBpkEn92sCZERS39imFrvOLs1x.WTrzG1xfC3xnyRPBJyYZ/prPve', 0, 1),
-(17, 'sandino79', '$2y$10$4HglfZbjRxcBF0iNPmuRmeLqZJDTzchtBgxOKyl4bBJR/Df7W7Rxi', 0, 14);
+(17, 'sandino79', '$2y$10$4HglfZbjRxcBF0iNPmuRmeLqZJDTzchtBgxOKyl4bBJR/Df7W7Rxi', 0, 14),
+(29, 'dominga', '$2y$10$E/t3DJn1l2PTN5wFRKUHrezct9vET/I53AeXEbJslqSn0dARR6/yq', 0, 3),
+(30, 'benja', '$2y$10$giFsWQQqinocjXB6oMWS2OPFfzt7rhz9dHgb77QjHTdZsjEWAwdkC', 0, 36),
+(31, '007', '$2y$10$hbZKsUM1cIe8BJ7tradeE.D7jGZwO712lAPV8hDeD0D07eWeQDCwi', 0, 37);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `fullperson`
+--
+DROP TABLE IF EXISTS `fullperson`;
+
+DROP VIEW IF EXISTS `fullperson`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fullperson`  AS  select `u`.`idpersons` AS `useridpersons`,`p`.`idpersons` AS `idpersons`,`p`.`globalid` AS `globalid`,`p`.`names` AS `names`,`p`.`firstname` AS `firstname`,`p`.`lastname` AS `lastname`,`p`.`dataperson` AS `dataperson`,`u`.`idusersdata` AS `idusersdata`,`u`.`user` AS `user`,`u`.`password` AS `password` from (`persons` `p` join `usersdata` `u` on((`p`.`idpersons` = `u`.`idpersons`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `getperson`
+--
+DROP TABLE IF EXISTS `getperson`;
+
+DROP VIEW IF EXISTS `getperson`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `getperson`  AS  select `p`.`idpersons` AS `idpersons`,`p`.`globalid` AS `globalid`,`p`.`names` AS `names`,`p`.`firstname` AS `firstname`,`p`.`lastname` AS `lastname`,`u`.`user` AS `user`,`u`.`password` AS `password` from (`persons` `p` join `usersdata` `u` on((`u`.`idpersons` = `p`.`idpersons`))) ;
 
 -- --------------------------------------------------------
 

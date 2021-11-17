@@ -69,7 +69,9 @@
 						  </tr>
 						</thead>
 						<tbody>
+						<form action="user-update.php" method="post">
 						  <?php
+						 
 						 $i=false;
 						  while($estData=$resultado->fetch_assoc())
 						  {
@@ -82,8 +84,9 @@
 							<td> <?php echo $estData['Usuario']  ?></td>
 							<td>  <?php echo $estData['Carrera']  ?></td>
 							<td>
-								<i class="icon-pencil p-1"> 	</i>
-								<i class="icon-trash p-1"> 	</i>
+								<button class="icon-pencil p-1 border-0 bg-white" name="editar" type="submit" value=" <?php echo $estData['Carnet']  ?>" ></button>
+								<button class="icon-trash p-1 border-0 bg-white" name="eliminar" type="submit" value=" <?php echo $estData['Carnet']  ?>" ></button>
+
 							</td>
 						  </tr>
 						  <?php 
@@ -97,6 +100,7 @@
 						  }
 						  ?>
 						</tbody>
+						</form>
 					  </table>
 
 				</div></div>
